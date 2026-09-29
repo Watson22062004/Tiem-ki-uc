@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Tiệm Cầm Đồ — v5</title>
+<style>
+:root{--green:#4c8d63;--green2:#72a878;--dark:#3f473e;--cream:#fffaf0;--paper:#fffdf7;--line:#dce6d5;--gold:#f2c34f;--brown:#735845;--pink:#e98b8b;--shadow:0 6px 0 #c9d5c0,0 10px 22px #53634a16}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;background:#e6eadc;color:var(--dark);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button{font:inherit;border:0;cursor:pointer}button:active{transform:translateY(2px)}
+#app{width:min(100%,520px);min-height:100vh;margin:auto;background:var(--cream);position:relative;overflow:hidden;padding-bottom:88px}
+.top{position:sticky;top:0;z-index:20;background:linear-gradient(135deg,#3e8056,#73ae78);padding:13px 13px 11px;display:grid;grid-template-columns:1fr auto auto;gap:8px;color:#fff;box-shadow:0 5px 16px #33543b33}.pill{background:#f7fbef;color:#4a4c3e;border-radius:24px;padding:8px 11px;font-weight:900;white-space:nowrap;box-shadow:inset 0 -2px #dbe6d3}.brand{display:flex;align-items:center;gap:8px;min-width:0}.brand b{font-size:16px;white-space:nowrap}.brand small{display:block;font-size:10px;opacity:.85;font-weight:700}.stat{display:flex;align-items:center;gap:5px;font-size:13px}.topbtn{width:39px;height:39px;border-radius:50%;background:#f7fbef;color:#4b634d;font-size:20px}
+.screen{display:none;animation:fade .18s ease}.screen.active{display:block}@keyframes fade{from{opacity:.5;transform:translateY(5px)}to{opacity:1;transform:none}}
+.page{padding:12px}.title{font-size:24px;font-weight:950;margin:5px 0 3px;letter-spacing:-.5px}.sub{font-size:13px;color:#7c806f;line-height:1.4}.section-title{display:flex;justify-content:space-between;align-items:center;margin:16px 3px 9px;font-weight:950}.section-title span{font-size:13px;color:#7c806f}
+.card{background:var(--paper);border:2px solid var(--line);border-radius:22px;margin:10px 0;padding:13px;box-shadow:var(--shadow)}
+.hero{height:260px;border-radius:25px;overflow:hidden;position:relative;background:linear-gradient(#d9efd4 0 56%,#c9996e 56%);border:2px solid #d6e1ce;box-shadow:var(--shadow)}
+.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 13% 24%,#fff6 0 4px,transparent 5px),radial-gradient(circle at 83% 18%,#fff7 0 5px,transparent 6px),radial-gradient(circle at 63% 35%,#fff6 0 3px,transparent 4px)}
+.wall-shelf{position:absolute;left:14px;right:14px;top:43px;height:72px;background:#a97955;border:5px solid #79533e;border-radius:10px;box-shadow:0 6px #674632}.shelf-items{display:flex;justify-content:space-around;align-items:end;height:62px;font-size:35px}.counter{position:absolute;left:13px;right:13px;bottom:22px;height:55px;background:#b77d55;border:5px solid #744c37;border-radius:9px;box-shadow:0 7px #63432f}.counter:after{content:"";position:absolute;left:12px;right:12px;top:10px;height:10px;border-radius:5px;background:#dca77b}.plant{position:absolute;bottom:21px;left:22px;font-size:44px;z-index:2}.npc{position:absolute;bottom:28px;font-size:48px;z-index:3;filter:drop-shadow(0 3px 0 #684733)}.npc.a{right:56px}.npc.b{left:92px}.sign{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:#fff4d2;border:3px solid #7b6049;border-radius:11px;padding:5px 13px;font-weight:950;color:#5a503d;white-space:nowrap;box-shadow:0 4px #8d684e}.clock{position:absolute;right:18px;top:18px;background:#fff9df;border:3px solid #75644f;border-radius:50%;width:37px;height:37px;display:grid;place-items:center;font-size:17px}
+.openbar{display:grid;grid-template-columns:1.25fr .75fr;gap:9px;margin-top:12px}.bigbtn{padding:15px;border-radius:17px;background:var(--green);color:#fff;font-weight:950;font-size:16px;box-shadow:0 5px #356b47}.bigbtn.close{background:#b96d62;box-shadow:0 5px #8f4e47}.bigbtn:disabled{opacity:.45;box-shadow:none}.mini-btn{padding:11px;border-radius:14px;background:#edf4e8;color:#4d674f;border:2px solid #d9e6d4;font-weight:900}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.metric{background:#f2f7ec;border:2px solid #dce7d6;border-radius:16px;padding:10px;text-align:center}.metric b{display:block;font-size:17px}.metric small{color:#7b816e;font-weight:700}
+.event{background:#fff4ce;border:2px solid #efd98e;border-radius:17px;padding:11px;display:flex;gap:10px;align-items:center}.event .ei{font-size:30px}.event b{display:block}.event small{color:#796f52;line-height:1.3}
+.goal{display:grid;gap:8px}.goalrow{display:grid;grid-template-columns:24px 1fr auto;gap:8px;align-items:center}.bar{height:8px;background:#e5eadf;border-radius:8px;overflow:hidden;margin-top:5px}.bar i{display:block;height:100%;background:#66a773;border-radius:8px}
+.customer{display:grid;grid-template-columns:55px 1fr auto;gap:10px;align-items:center}.avatar{width:55px;height:55px;border-radius:18px;background:#edf4e7;border:2px solid #d5e3ce;display:grid;place-items:center;font-size:33px}.customer h3{margin:0 0 2px;font-size:16px}.tag{display:inline-block;background:#f8e4e4;color:#9a5a5a;border-radius:9px;padding:3px 7px;font-size:10px;font-weight:900}.money{font-weight:950;color:#8c673e;white-space:nowrap}.customer p{grid-column:2/4;margin:0;color:#6f7568;font-size:12px;line-height:1.35}
+.action-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.action{background:#f5f7ee;border:2px solid #dfe7d8;border-radius:17px;padding:12px;text-align:left;color:#4c5749;font-weight:900}.action b{display:block;font-size:25px;margin-bottom:5px}.action small{display:block;color:#858979;font-weight:650;margin-top:3px}.action.green{background:#e8f4e8;border-color:#cbe0c9}.action.gold{background:#fff6dc;border-color:#efdfad}.action.pink{background:#fff0ee;border-color:#efd1ce}.action.blue{background:#edf5f7;border-color:#d2e2e5}
+.tabs{display:flex;gap:7px;overflow:auto;padding:2px 0 5px}.tab{flex:0 0 auto;padding:8px 12px;border-radius:20px;background:#edf2e8;border:2px solid #dbe4d6;font-weight:850;color:#65705f}.tab.on{background:#4e8b61;color:#fff;border-color:#4e8b61}
+.list{display:grid;gap:9px}.item{display:grid;grid-template-columns:54px 1fr auto;gap:10px;align-items:center;background:#fff;border:2px solid #e1e7dc;border-radius:18px;padding:10px}.item-icon{width:54px;height:54px;border-radius:16px;background:#f1f5e9;display:grid;place-items:center;font-size:31px}.item h4{margin:0 0 3px;font-size:15px}.item small{color:#7e8275;line-height:1.35}.price{font-weight:950;color:#76583e}.pillbtn{padding:8px 10px;border-radius:11px;background:#4d8d62;color:#fff;font-weight:900}.pillbtn.alt{background:#edf1e8;color:#5c6959}.pillbtn.red{background:#c76c65}
+.workbench{background:linear-gradient(#dfead8,#d2dfcc);border:2px solid #c8d9c0;border-radius:21px;padding:12px}.bench{height:72px;background:#a87854;border:4px solid #704b36;border-radius:10px;position:relative;margin:13px 0}.bench:after{content:"";position:absolute;left:10px;right:10px;top:14px;height:8px;background:#d49a6e;border-radius:4px}.tools{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.tool{background:#fff;border:2px solid #d9e4d4;border-radius:14px;padding:9px;text-align:center;font-weight:850}.tool b{display:block;font-size:25px}.progress{height:12px;background:#e2e8de;border-radius:10px;overflow:hidden}.progress i{display:block;height:100%;background:#6fa975;width:0;transition:.25s}
+.review{position:relative}.review .stars{color:#f1bd3c;font-size:17px;letter-spacing:1px}.reply{margin-top:9px;background:#eef5e9;border-left:5px solid #6da875;border-radius:10px;padding:8px;color:#5c6959;font-size:12px}.replybtn{float:right;margin-top:-4px}
+.upgrade{display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:center}.upgrade .ui{width:52px;height:52px;border-radius:15px;background:#edf4e8;display:grid;place-items:center;font-size:28px}.upgrade h4{margin:0}.upgrade small{color:#7c8373}
+.journal{display:flex;gap:10px;padding:11px 0;border-bottom:1px solid #e5e9df}.journal:last-child{border-bottom:0}.date{min-width:57px;color:#6e8b70;font-weight:950;font-size:12px}.journal b{display:block}.journal span{color:#777d70;font-size:12px;line-height:1.35}
+.modal{position:fixed;inset:0;background:#26362a88;display:none;align-items:flex-end;z-index:50}.modal.show{display:flex}.sheet{width:min(100%,520px);margin:auto;background:#fffaf1;border-radius:28px 28px 0 0;padding:16px;max-height:86vh;overflow:auto;box-shadow:0 -12px 30px #23352533}.handle{width:46px;height:5px;background:#d3dacd;border-radius:9px;margin:0 auto 12px}.sheet h2{margin:3px 0 5px}.sheet .row{display:flex;justify-content:space-between;align-items:center;margin:8px 0}.closex{float:right;width:35px;height:35px;border-radius:50%;background:#edf2e9;font-weight:950}.summary{background:#f1f6eb;border:2px solid #dce8d7;border-radius:18px;padding:12px;margin:10px 0}.summary b{font-size:22px}.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.modal-actions .full{grid-column:1/-1}
+.nav{position:fixed;bottom:0;z-index:40;width:min(100%,520px);background:#fffdf8;border-top:2px solid #e5eadf;display:grid;grid-template-columns:repeat(5,1fr);padding:7px 4px calc(7px + env(safe-area-inset-bottom));box-shadow:0 -5px 18px #58645212}.nav button{background:transparent;color:#919687;font-size:10px;font-weight:850;padding:2px}.nav button b{display:block;font-size:23px;line-height:25px}.nav button.active{color:#4e8b61}.nav button.active b{filter:saturate(1.2)}
+.toast{position:fixed;left:50%;bottom:93px;transform:translate(-50%,20px);background:#3e493e;color:#fff;padding:11px 15px;border-radius:14px;font-weight:800;font-size:13px;opacity:0;pointer-events:none;transition:.22s;z-index:70;white-space:nowrap;max-width:92vw}.toast.show{opacity:1;transform:translate(-50%,0)}
+.empty{text-align:center;padding:24px;color:#858b7c}.danger{color:#a4514b}.greenText{color:#4d8d62}.goldText{color:#a27731}
+@media(max-width:360px){.top{grid-template-columns:1fr auto}.top .repPill{display:none}.title{font-size:21px}.hero{height:235px}}
+</style>
+</head>
+<body>
+<div id="app">
+<header class="top">
+  <div class="brand"><span style="font-size:27px">🏪</span><div><b>Tiệm Cầm Đồ</b><small id="statusText">Đang đóng cửa</small></div></div>
+  <div class="pill stat">🪙 <span id="money">8.270</span></div>
+  <div class="pill stat repPill">⭐ <span id="rep">5,0</span></div>
+  <button class="topbtn" onclick="openModal('settingsModal')">⚙️</button>
+</header>
+
+<section id="home" class="screen active"><div class="page">
+  <div class="hero">
+    <div class="sign">🌿 TIỆM CẦM ĐỒ 🌿</div><div class="clock">🕰️</div>
+    <div class="wall-shelf"><div class="shelf-items"><span>⌚</span><span>📷</span><span>📻</span><span>💍</span><span>🎸</span></div></div>
+    <div class="plant">🌿</div><div class="npc b">🧑🏻‍🔧</div><div class="npc a">👩🏻</div><div class="counter"></div>
+  </div>
+  <div class="openbar"><button class="bigbtn" id="openBtn" onclick="openShop()">🚪 MỞ CỬA</button><button class="bigbtn close" id="closeBtn" onclick="confirmClose()" disabled>🔔 ĐÓNG CỬA</button></div>
+  <div class="card"><div class="metrics"><div class="metric"><b id="day">Ngày 1</b><small id="time">08:00</small></div><div class="metric"><b id="todayRevenue">0🪙</b><small>Doanh thu</small></div><div class="metric"><b id="servedCount">0/6</b><small>Khách hôm nay</small></div></div></div>
+  <div class="section-title">📅 Tình hình khu phố <span>Ngẫu nhiên</span></div><div class="event" id="eventBox"></div>
+  <div class="section-title">🎯 Mục tiêu hôm nay</div><div class="card goal" id="goals"></div>
+  <div class="section-title">⚡ Làm nhanh</div><div class="action-grid">
+    <button class="action green" onclick="openShop()"><b>👥</b>Khách hàng<small>Xem khách đang chờ</small></button>
+    <button class="action gold" onclick="go('inventory')"><b>📦</b>Kho đồ<small>Kiểm tra hàng & vật liệu</small></button>
+    <button class="action blue" onclick="go('workshop')"><b>🛠️</b>Xưởng sửa<small>Khôi phục món đồ</small></button>
+    <button class="action pink" onclick="go('market')"><b>🏷️</b>Bảng giá<small>Định giá & trưng bày</small></button>
+  </div>
+</div></section>
+
+<section id="customers" class="screen"><div class="page">
+  <div class="title">👥 Khách hàng</div><div class="sub">Mỗi người có tính cách, ngân sách và món đồ khác nhau.</div>
+  <div class="tabs"><button class="tab on" onclick="customerFilter('all',this)">Tất cả</button><button class="tab" onclick="customerFilter('pawn',this)">Cầm/Bán</button><button class="tab" onclick="customerFilter('repair',this)">Sửa đồ</button><button class="tab" onclick="customerFilter('buy',this)">Mua hàng</button></div>
+  <div class="section-title">Đang chờ <span id="queueCount">0 khách</span></div><div class="list" id="customerList"></div>
+  <div class="card"><b>📣 Tin đồn trong khu phố</b><p class="sub" id="rumor">Mọi người đang nói về tiệm. Uy tín tốt sẽ kéo thêm khách.</p></div>
+</div></section>
+
+<section id="workshop" class="screen"><div class="page">
+  <div class="title">🛠️ Xưởng phục chế</div><div class="sub">Tháo — vệ sinh — thay linh kiện — kiểm tra. Mỗi loại đồ có quy trình riêng.</div>
+  <div class="workbench card"><div class="bench"></div><div class="tools"><button class="tool" onclick="useTool('🔧')"><b>🔧</b>Tua vít</button><button class="tool" onclick="useTool('🪛')"><b>🪛</b>Kìm</button><button class="tool" onclick="useTool('🧲')"><b>🧲</b>Nam châm</button><button class="tool" onclick="useTool('🔬')"><b>🔬</b>Kính lúp</button></div></div>
+  <div class="section-title">Đang sửa <span id="repairCount">0 món</span></div><div class="list" id="repairList"></div>
+  <div class="section-title">🧪 Vật liệu chế tạo</div><div class="card"><div class="list" id="materials"></div></div>
+</div></section>
+
+<section id="inventory" class="screen"><div class="page">
+  <div class="title">📦 Kho đồ</div><div class="sub">Đồ mua lại, đồ cầm cố, linh kiện và hàng đã phục chế.</div>
+  <div class="tabs"><button class="tab on">Tất cả</button><button class="tab">Đồ cũ</button><button class="tab">Đã sửa</button><button class="tab">Linh kiện</button></div>
+  <div class="list" id="inventoryList"></div>
+</div></section>
+
+<section id="market" class="screen"><div class="page">
+  <div class="title">🏷️ Bảng giá & trưng bày</div><div class="sub">Tự đặt giá. Giá cao dễ lời hơn nhưng khách sẽ cân nhắc lâu hơn.</div>
+  <div class="card"><div class="section-title" style="margin-top:0">🏪 Tủ trưng bày <span id="displayCount">0/4</span></div><div class="list" id="marketList"></div></div>
+  <div class="action-grid"><button class="action gold" onclick="priceAll()"><b>💰</b>Định giá nhanh<small>Đặt giá đề xuất</small></button><button class="action green" onclick="advertise()"><b>📣</b>Quảng bá tiệm<small>Gọi thêm khách</small></button></div>
+</div></section>
+
+<section id="reviews" class="screen"><div class="page">
+  <div class="title">⭐ Đánh giá của khách</div><div class="sub">Khách nhớ cách bạn đối xử, không chỉ nhớ giá tiền.</div>
+  <div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:42px;font-weight:950" id="bigRep">5,0</div><div class="stars">★★★★★</div></div><div style="text-align:right"><b id="reviewCount">0</b><br><small>đánh giá</small></div></div></div>
+  <div class="list" id="reviewList"></div>
+</div></section>
+
+<section id="upgrade" class="screen"><div class="page">
+  <div class="title">🏗️ Nâng cấp tiệm</div><div class="sub">Mở rộng xưởng, tăng kho và mở khóa những món hiếm.</div><div class="list" id="upgradeList"></div>
+</div></section>
+
+<section id="journal" class="screen"><div class="page"><div class="title">📖 Nhật ký tiệm</div><div class="sub">Mỗi ngày là một câu chuyện mới.</div><div class="card" id="journalList"></div></div></section>
+
+<nav class="nav">
+<button onclick="go('home')" id="n-home" class="active"><b>🏠</b>Tiệm</button>
+<button onclick="go('customers')" id="n-customers"><b>👥</b>Khách</button>
+<button onclick="go('workshop')" id="n-workshop"><b>🛠️</b>Xưởng</button>
+<button onclick="go('inventory')" id="n-inventory"><b>📦</b>Kho</button>
+<button onclick="openMore()" id="n-more"><b>☰</b>Thêm</button>
+</nav>
+
+<div class="modal" id="moreModal" onclick="if(event.target===this)closeModal('moreModal')"><div class="sheet"><div class="handle"></div><button class="closex" onclick="closeModal('moreModal')">×</button><h2>☰ Quản lý tiệm</h2><div class="sub">Nhiều công cụ hơn cho ông/bà chủ.</div><div class="action-grid" style="margin-top:12px"><button class="action gold" onclick="goAndClose('market')"><b>🏷️</b>Bảng giá</button><button class="action green" onclick="goAndClose('reviews')"><b>⭐</b>Đánh giá</button><button class="action blue" onclick="goAndClose('upgrade')"><b>🏗️</b>Nâng cấp</button><button class="action pink" onclick="goAndClose('journal')"><b>📖</b>Nhật ký</button><button class="action" onclick="openModal('financeModal');closeModal('moreModal')"><b>💼</b>Sổ tài chính</button><button class="action" onclick="openModal('customersModal');closeModal('moreModal')"><b>📋</b>Lịch khách</button><button class="action gold" onclick="openModal('pawnModal');closeModal('moreModal')"><b>🤝</b>Sổ cầm đồ</button><button class="action blue" onclick="craftPart();closeModal('moreModal')"><b>⚙️</b>Chế linh kiện</button></div></div></div>
+
+<div class="modal" id="dealModal" onclick="if(event.target===this)closeModal('dealModal')"><div class="sheet"><div class="handle"></div><button class="closex" onclick="closeModal('dealModal')">×</button><div id="dealContent"></div></div></div>
+
+<div class="modal" id="closeModal" onclick="if(event.target===this)closeModal('closeModal')"><div class="sheet"><div class="handle"></div><button class="closex" onclick="closeModal('closeModal')">×</button><h2>🌙 Đóng cửa tiệm?</h2><div class="sub">Kết thúc ngày sẽ chốt doanh thu, đánh giá và chuyển sang ngày mới.</div><div class="summary" id="closeSummary"></div><div class="modal-actions"><button class="mini-btn" onclick="closeModal('closeModal')">Ở lại</button><button class="bigbtn close" onclick="endDay()">🔒 Đóng cửa & chốt ngày</button></div></div></div>
+
+<div class="modal" id="settingsModal" onclick="if(event.target===this)closeModal('settingsModal')"><div class="sheet"><div class="handle"></div><button class="closex" onclick="closeModal('settingsModal')">×</button><h2>⚙️ Cài đặt</h2><div class="action-grid"><button class="action" onclick="toast('Đã bật âm thanh 🔊')"><b>🔊</b>Âm thanh</button><button class="action" onclick="toast('Đã lưu tiến trình 💾')"><b>💾</b>Lưu game</button><button class="action" onclick="toast('Giao diện đang ở chế độ sáng ☀️')"><b>☀️</b>Giao diện</button><button class="action" onclick="toast('Tiếng Việt 🇻🇳')"><b>🇻🇳</b>Ngôn ngữ</button></div></div></div>
+<div class="modal" id="financeModal" onclick="if(event.target===this)closeModal('financeModal')"><div class="sheet"><div class="handle"></div><button class="closex" onclick="closeModal('financeModal')">×</button><h2>💼 Sổ tài chính</h2><div class="summary"><div class="row"><span>Tiền mặt</span><b id="finMoney">0🪙</b></div><div class="row"><span>Doanh thu hôm nay</span><b id="finRevenue">0🪙</b></div><div class="row"><span>Chi phí hôm nay</span><b id="finCost">0🪙</b></div><div class="row"><span>Lãi tạm tính</span><b class="greenText" id="finProfit">0🪙</b></div></div></div></div>
+<div class="modal" id="customersModal" onclick="if(event.target===this)closeModal('customersModal')"><div class="sheet"><div class="handle"></div><button class="closex" onclick="closeModal('customersModal')">×</button><h2>📋 Lịch khách</h2><div id="customerHistory"></div></div></div>
+<div class="modal" id="pawnModal" onclick="if(event.target===this)closeModal('pawnModal')"><div class="sheet"><div class="handle"></div><button class="closex" onclick="closeModal('pawnModal')">×</button><h2>🤝 Sổ cầm đồ</h2><div class="sub">Theo dõi khách gửi đồ và tiền chuộc.</div><div id="pawnList"></div></div></div>
+<div class="toast" id="toast"></div>
+</div>
+
+<script>
+const events=[
+ ['🌤️','Ngày bình thường','Khu phố khá yên bình. Có đủ khách để làm việc thong thả.'],
+ ['🌧️','Trời mưa','Mưa từ sáng. Người đi đường ít hơn nhưng vài khách mang đồ đến trú mưa.'],
+ ['💸','Nhiều người cần tiền','Có khá nhiều người mang đồ đến cầm hoặc bán trong hôm nay.'],
+ ['🎉','Lễ hội khu phố','Không khí nhộn nhịp. Nhiều người ghé qua tiệm hơn thường ngày.'],
+ ['📰','Tin đồn về đồ cổ','Nghe nói có người đang tìm một món đồ cổ đặc biệt quanh khu phố.'],
+ ['🛍️','Chợ đồ cũ','Một khu chợ đồ cũ vừa mở gần tiệm. Có thể gặp món hời.'],
+ ['👨‍👩‍👧','Ngày đoàn tụ','Nhiều người tìm những món đồ cũ mang ý nghĩa kỷ niệm.']
+];
+const customers=[
+ {id:1,name:'Mai Anh',avatar:'👩🏻',type:'repair',tag:'Dễ tính',item:'Gấu bông cũ',emoji:'🧸',text:'“Chú gấu này theo mình từ bé, sửa giúp mình nhé.”',money:320},
+ {id:2,name:'Bác Nam',avatar:'👴🏻',type:'pawn',tag:'Cần tiền',item:'Đồng hồ cơ',emoji:'⌚',text:'“Bác muốn bán lại chiếc đồng hồ này, cháu xem giúp.”',money:680},
+ {id:3,name:'Minh Khôi',avatar:'🧑🏻',type:'buy',tag:'Mặc cả',item:'Máy ảnh phim',emoji:'📷',text:'“Máy này còn dùng được không? Nếu ổn tôi lấy.”',money:1500},
+ {id:4,name:'Phương Thảo',avatar:'👩🏻‍🦰',type:'pawn',tag:'Khó tính',item:'Nhẫn bạc',emoji:'💍',text:'“Đừng trả giá thấp quá nhé, tôi biết món này đáng giá.”',money:900},
+ {id:5,name:'Huy',avatar:'🧑🏻‍🔧',type:'repair',tag:'Nóng tính',item:'Radio cổ',emoji:'📻',text:'“Sửa nhanh giúp tôi, chiều tôi quay lại lấy.”',money:420},
+ {id:6,name:'Cô Lan',avatar:'👩🏻‍🦳',type:'buy',tag:'Sưu tầm',item:'Hộp nhạc gỗ',emoji:'🎵',text:'“Cô đang tìm một hộp nhạc có câu chuyện cũ.”',money:1000}
+];
+const items=[
+ {name:'Đồng hồ cơ cũ',emoji:'⌚',type:'Cơ khí',condition:'Hỏng nhẹ',cost:430,value:920,price:820,status:'Đồ cũ'},
+ {name:'Máy ảnh phim',emoji:'📷',type:'Quang học',condition:'Bụi, kẹt màn trập',cost:710,value:1450,price:1280,status:'Đồ cũ'},
+ {name:'Radio cổ',emoji:'📻',type:'Điện tử',condition:'Chập điện nhẹ',cost:320,value:850,price:760,status:'Đồ cũ'},
+ {name:'Nhẫn bạc',emoji:'💍',type:'Trang sức',condition:'Xỉn màu',cost:280,value:780,price:690,status:'Đã sửa'},
+ {name:'Hộp nhạc gỗ',emoji:'🎵',type:'Cơ khí',condition:'Kẹt cơ cấu',cost:260,value:640,price:590,status:'Đã sửa'}
+];
+const upgrades=[
+ {id:1,icon:'🪚',name:'Bàn phục chế gỗ',desc:'Thêm chỗ thao tác và mở quy trình sửa đồ cơ bản.',cost:900},
+ {id:2,icon:'🔬',name:'Phòng thẩm định',desc:'Phát hiện món hiếm, hàng giả và linh kiện nguyên bản.',cost:1500},
+ {id:3,icon:'🗄️',name:'Kho lớn',desc:'Tăng sức chứa đồ và vật liệu.',cost:2200},
+ {id:4,icon:'💎',name:'Tủ đồ hiếm',desc:'Mở khu trưng bày cho đồ sưu tầm giá trị cao.',cost:3200}
+];
+let state={money:8270,rep:5,day:1,time:'08:00',open:false,revenue:0,cost:0,served:0,event:null,queue:customers.slice(0,4),owned:items.map(x=>({...x})),repairs:[],display:[],reviews:[],journal:[],materials:[{name:'Dầu máy',emoji:'🧴',qty:8},{name:'Dây đồng',emoji:'🧵',qty:12},{name:'Vải & bông',emoji:'🧶',qty:15},{name:'Linh kiện',emoji:'⚙️',qty:9}],upgrades:[],pawns:[],goals:{revenue:5000,served:6,repair:2}};
+const $=id=>document.getElementById(id);
+function money(n){return Math.round(n).toLocaleString('vi-VN')+'🪙'}
+function toast(t){const x=$('toast');x.textContent=t;x.classList.add('show');clearTimeout(window.__toast);window.__toast=setTimeout(()=>x.classList.remove('show'),1700)}
+function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));const n=$('n-'+id);if(n)n.classList.add('active');if(id==='customers')renderCustomers();if(id==='workshop')renderWorkshop();if(id==='inventory')renderInventory();if(id==='market')renderMarket();if(id==='reviews')renderReviews();if(id==='upgrade')renderUpgrades();if(id==='journal')renderJournal()}
+function goAndClose(id){closeModal('moreModal');go(id)}
+function openModal(id){$(id).classList.add('show');if(id==='financeModal')renderFinance();if(id==='customersModal')renderHistory()}
+function closeModal(id){$(id).classList.remove('show')}
+function openMore(){openModal('moreModal')}
+function openShop(){if(state.open){go('customers');return}state.open=true;state.time='08:00';state.served=0;state.revenue=0;state.cost=0;state.queue=customers.slice(0,Math.min(4,3+Math.floor(Math.random()*3)));state.event=events[Math.floor(Math.random()*events.length)];$('openBtn').disabled=true;$('closeBtn').disabled=false;$('statusText').textContent='🟢 Đang mở cửa';renderAll();go('customers');toast('🔔 Tiệm đã mở cửa! Khách đang tới.');}
+function confirmClose(){if(!state.open)return;const unfinished=state.queue.length; $('closeSummary').innerHTML=`<div class="row"><span>💰 Doanh thu</span><b>${money(state.revenue)}</b></div><div class="row"><span>👥 Đã phục vụ</span><b>${state.served}</b></div><div class="row"><span>🛠️ Đang sửa</span><b>${state.repairs.length} món</b></div><div class="row"><span>🚶 Khách còn chờ</span><b>${unfinished}</b></div><hr><small>${unfinished? 'Vẫn còn khách chờ. Đóng cửa sẽ khiến họ rời đi.':'Đã xử lý hết khách trong ngày.'}</small>`;openModal('closeModal')}
+function endDay(){closeModal('closeModal');state.open=false;state.time='20:00';state.journal.unshift({day:state.day,revenue:state.revenue,served:state.served,event:state.event?state.event[1]:'Ngày bình thường'});state.day++;state.time='08:00';state.queue=[];state.event=events[Math.floor(Math.random()*events.length)];$('statusText').textContent='Đang đóng cửa';$('openBtn').disabled=false;$('closeBtn').disabled=true;renderAll();go('home');toast('🌙 Đã chốt ngày. Ngày mới bắt đầu!');}
+function renderHome(){
+ $('money').textContent=state.money.toLocaleString('vi-VN');$('rep').textContent=state.rep.toFixed(1).replace('.',',');$('bigRep').textContent=state.rep.toFixed(1).replace('.',',');$('day').textContent='Ngày '+state.day;$('time').textContent=state.time;$('todayRevenue').textContent=money(state.revenue);$('servedCount').textContent=state.served+'/6';
+ const e=state.event||events[0];$('eventBox').innerHTML=`<div class="ei">${e[0]}</div><div><b>${e[1]}</b><small>${e[2]}</small></div>`;
+ const g=[['💰','Doanh thu '+money(state.revenue),state.revenue,state.goals.revenue],['🙂','Phục vụ khách',state.served,state.goals.served],['🛠️','Hoàn thành sửa',state.repairs.length,state.goals.repair]];$('goals').innerHTML=g.map(x=>`<div class="goalrow"><span>${x[0]}</span><div><b>${x[1]}</b><div class="bar"><i style="width:${Math.min(100,x[2]/x[3]*100)}%"></i></div></div><b>${Math.min(x[2],x[3])}/${x[3]}</b></div>`).join('');
+}
+function customerFilter(type,btn){document.querySelectorAll('#customers .tab').forEach(x=>x.classList.remove('on'));btn.classList.add('on');renderCustomers(type)}
+function renderCustomers(type='all'){let q=state.queue.filter(c=>type==='all'||c.type===type);$('queueCount').textContent=q.length+' khách';$('customerList').innerHTML=q.length?q.map(c=>`<div class="card customer"><div class="avatar">${c.avatar}</div><div><h3>${c.name}</h3><span class="tag">${c.tag}</span></div><div class="money">${money(c.money)}</div><p>${c.text}<br><b>${c.emoji} ${c.item}</b></p><button class="pillbtn" onclick="serveCustomer(${c.id})">Tiếp khách</button></div>`).join(''):`<div class="empty">🎉 Không còn khách chờ.<br>Tiệm đang rất yên bình.</div>`}
+function serveCustomer(id){if(!state.open){toast('Mở cửa trước đã!');return}const c=state.queue.find(x=>x.id===id);if(!c)return;$('dealContent').innerHTML=`<div class="title">${c.avatar} ${c.name}</div><div class="sub">${c.tag} · ngân sách ${money(c.money)}</div><div class="card"><div style="font-size:58px;text-align:center">${c.emoji}</div><h3>${c.item}</h3><p class="sub">${c.text}</p></div><div class="action-grid">${c.type==='pawn'?`<button class="action green" onclick="deal(${id},'buy')"><b>💰</b>Mua lại<small>Đề nghị ${money(Math.round(c.money*.72))}</small></button><button class="action gold" onclick="deal(${id},'pawn')"><b>🤝</b>Nhận cầm<small>Thỏa thuận kỳ hạn</small></button>`:''}${c.type==='repair'?`<button class="action blue" onclick="deal(${id},'repair')"><b>🛠️</b>Nhận sửa<small>Ước tính ${money(Math.round(c.money*.35))}</small></button><button class="action pink" onclick="deal(${id},'reject')"><b>🙅</b>Từ chối<small>Khách có thể phật ý</small></button>`:''}${c.type==='buy'?`<button class="action green" onclick="deal(${id},'sell')"><b>🏷️</b>Bán hàng<small>Đề xuất giá phù hợp</small></button><button class="action gold" onclick="deal(${id},'negotiate')"><b>🗣️</b>Mặc cả<small>Thử thương lượng</small></button>`:''}</div>`;openModal('dealModal')}
+function deal(id,action){const c=state.queue.find(x=>x.id===id);if(!c)return;let gain=0,cost=0,msg='';if(action==='buy'){cost=Math.round(c.money*.72);gain=0;msg=`Đã mua ${c.item} với giá ${money(cost)}.`;state.owned.push({name:c.item,emoji:c.emoji,type:'Đồ cũ',condition:'Cần thẩm định',cost, value:Math.round(cost*1.8),price:Math.round(cost*1.6),status:'Đồ cũ'});}else if(action==='pawn'){gain=Math.round(c.money*.55);msg=`Nhận cầm ${c.item}. Khách hẹn quay lại.`;state.pawns.push({name:c.name,item:c.item,emoji:c.emoji,loan:gain,redeem:Math.round(gain*1.18),days:7});}else if(action==='repair'){gain=Math.round(c.money*.35);msg=`Nhận đơn sửa ${c.item}. Đã đưa vào xưởng.`;state.repairs.push({name:c.item,emoji:c.emoji,progress:0,fee:gain});}else if(action==='sell'){gain=Math.round(c.money*.75);msg=`Bán ${c.item} thành công.`;}else if(action==='negotiate'){gain=Math.round(c.money*.62);msg=`Mặc cả thành công, khách đồng ý ${money(gain)}.`;}else{state.rep=Math.max(0,state.rep-.1);msg='Khách rời đi, có vẻ không vui.'}
+state.money+=gain-cost;state.revenue+=gain;state.cost+=cost;state.served++;state.time=(8+Math.floor(state.served*1.35)).toString().padStart(2,'0')+':'+(state.served%2?'20':'00');state.queue=state.queue.filter(x=>x.id!==id);if(action!=='reject')state.rep=Math.min(5,state.rep+.03);state.reviews.unshift({name:c.name,avatar:c.avatar,stars:action==='reject'?3:5,text:action==='reject'?'“Lần sau mong tiệm tư vấn nhẹ nhàng hơn.”':`“Cảm ơn tiệm, ${msg.toLowerCase()}”`,reply:''});closeModal('dealModal');renderAll();toast('✅ '+msg);}
+function useTool(tool){if(!state.repairs.length){toast('Chưa có món nào trong xưởng.');return}const r=state.repairs[0];r.progress=Math.min(100,r.progress+25);if(r.progress>=100){state.repairs.shift();state.money+=r.fee;state.revenue+=r.fee;state.rep=Math.min(5,state.rep+.08);state.owned.push({name:r.name,emoji:r.emoji,type:'Phục chế',condition:'92% · đã kiểm tra',cost:0,value:Math.round(r.fee*2.2),price:Math.round(r.fee*2),status:'Đã sửa'});toast('✨ '+r.name+' đã phục chế xong! +'+money(r.fee));}else toast(tool+' Đã thao tác '+r.name+' · '+r.progress+'%');renderAll()}
+function renderWorkshop(){$('repairCount').textContent=state.repairs.length+' món';$('repairList').innerHTML=state.repairs.length?state.repairs.map(r=>`<div class="item"><div class="item-icon">${r.emoji}</div><div><h4>${r.name}</h4><small>Tiến độ ${r.progress}%</small><div class="progress"><i style="width:${r.progress}%"></i></div></div><button class="pillbtn" onclick="useTool('🔧')">Sửa</button></div>`).join(''):`<div class="empty">🧰 Xưởng đang trống.<br>Hãy nhận một đơn sửa từ khách.</div>`;$('materials').innerHTML=state.materials.map(m=>`<div class="item"><div class="item-icon">${m.emoji}</div><div><h4>${m.name}</h4><small>Vật liệu chế tạo / thay thế</small></div><b>x${m.qty}</b></div>`).join('')}
+function renderInventory(){$('inventoryList').innerHTML=state.owned.map((x,i)=>`<div class="item"><div class="item-icon">${x.emoji}</div><div><h4>${x.name}</h4><small>${x.type} · ${x.condition}<br>Giá vốn ${money(x.cost)} · Giá trị ~${money(x.value)}</small></div><div><b class="price">${money(x.price)}</b><button class="pillbtn alt" onclick="inspectItem(${i})">Xem</button></div></div>`).join('')}
+function inspectItem(i){const x=state.owned[i];$('dealContent').innerHTML=`<h2>${x.emoji} ${x.name}</h2><div class="summary"><div class="row"><span>Tình trạng</span><b>${x.condition}</b></div><div class="row"><span>Giá vốn</span><b>${money(x.cost)}</b></div><div class="row"><span>Giá trị thị trường</span><b>${money(x.value)}</b></div><div class="row"><span>Giá bán</span><b>${money(x.price)}</b></div></div><div class="modal-actions"><button class="mini-btn" onclick="closeModal('dealModal')">Đóng</button><button class="bigbtn" onclick="displayItem(${i})">🏷️ Trưng bày</button></div>`;openModal('dealModal')}
+function displayItem(i){const x=state.owned[i];if(state.display.length>=4){toast('Tủ trưng bày đã đầy.');return}if(!state.display.includes(i)){state.display.push(i);x.status='Đang trưng bày';}closeModal('dealModal');renderAll();toast('✨ Đã đưa '+x.name+' lên tủ!')}
+function renderMarket(){$('displayCount').textContent=state.display.length+'/4';const shown=state.display.map(i=>state.owned[i]).filter(Boolean);$('marketList').innerHTML=shown.length?shown.map((x,n)=>`<div class="item"><div class="item-icon">${x.emoji}</div><div><h4>${x.name}</h4><small>Đang trưng bày · Giá đề xuất ${money(x.price)}</small></div><button class="pillbtn" onclick="sellDisplayed(${n})">Bán</button></div>`).join(''):`<div class="empty">🪟 Tủ đang trống.<br>Vào Kho → chọn món → Trưng bày.</div>`}
+function sellDisplayed(n){const idx=state.display[n];const x=state.owned[idx];if(!x)return;state.money+=x.price;state.revenue+=x.price;state.served++;state.rep=Math.min(5,state.rep+.06);state.reviews.unshift({name:'Khách ghé tiệm',avatar:'🙂',stars:5,text:`“Món ${x.name} đẹp và đúng giá.”`,reply:''});state.display.splice(n,1);state.owned.splice(idx,1);state.display=state.display.map(i=>i>idx?i-1:i);renderAll();toast('💰 Bán thành công +'+money(x.price))}
+function priceAll(){state.owned.forEach(x=>{x.price=Math.round(x.value*.88)});renderAll();toast('🏷️ Đã cập nhật giá theo thị trường.')}
+function advertise(){if(state.money<150){toast('Cần 150🪙 để quảng bá.');return}state.money-=150;state.cost+=150;const extra=customers[Math.floor(Math.random()*customers.length)];state.queue.push({...extra,id:Date.now(),name:extra.name+' (được giới thiệu)'});renderAll();toast('📣 Có thêm một khách ghé tiệm!')}
+function renderReviews(){const avg=state.reviews.length?state.reviews.reduce((a,x)=>a+x.stars,0)/state.reviews.length:state.rep;$('bigRep').textContent=Math.min(5,avg).toFixed(1).replace('.',',');$('reviewCount').textContent=state.reviews.length;$('reviewList').innerHTML=state.reviews.length?state.reviews.slice(0,8).map((r,i)=>`<div class="card review"><b>${r.avatar} ${r.name}</b><div class="stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div><div style="margin-top:5px">${r.text}</div>${r.reply?`<div class="reply"><b>Tiệm</b><br>${r.reply}</div>`:`<button class="pillbtn alt replybtn" onclick="replyReview(${i})">Phản hồi</button>`}</div>`).join(''):`<div class="empty">⭐ Chưa có đánh giá.<br>Mở cửa để đón những vị khách đầu tiên.</div>`}
+function replyReview(i){const r=state.reviews[i];r.reply='“Cảm ơn bạn đã ghé tiệm. Hẹn gặp lại nhé!”';state.rep=Math.min(5,state.rep+.02);renderAll();toast('💬 Đã phản hồi đánh giá.')}
+function renderUpgrades(){$('upgradeList').innerHTML=upgrades.map(u=>`<div class="card upgrade"><div class="ui">${u.icon}</div><div><h4>${u.name}</h4><small>${u.desc}</small></div><button class="pillbtn ${state.upgrades.includes(u.id)?'alt':''}" ${state.upgrades.includes(u.id)?'disabled':''} onclick="buyUpgrade(${u.id})">${state.upgrades.includes(u.id)?'Đã mua':money(u.cost)}</button></div>`).join('')}
+function buyUpgrade(id){const u=upgrades.find(x=>x.id===id);if(state.money<u.cost){toast('Chưa đủ tiền nâng cấp.');return}state.money-=u.cost;state.cost+=u.cost;state.upgrades.push(id);renderAll();toast('🏗️ Đã nâng cấp: '+u.name)}
+function renderJournal(){$('journalList').innerHTML=state.journal.length?state.journal.map(j=>`<div class="journal"><div class="date">NGÀY ${j.day}</div><div><b>${j.event}</b><span>Doanh thu ${money(j.revenue)} · Phục vụ ${j.served} khách.</span></div></div>`).join(''):`<div class="empty">📖 Chưa có ngày nào được chốt.<br>Hãy mở cửa rồi đóng cửa để bắt đầu nhật ký.</div>`}
+function renderFinance(){$('finMoney').textContent=money(state.money);$('finRevenue').textContent=money(state.revenue);$('finCost').textContent=money(state.cost);$('finProfit').textContent=money(state.revenue-state.cost)}
+function renderHistory(){$('customerHistory').innerHTML=state.journal.length?state.journal.map(j=>`<div class="journal"><div class="date">Ngày ${j.day}</div><div><b>${j.served} lượt khách</b><span>Doanh thu ${money(j.revenue)}</span></div></div>`).join(''):`<div class="empty">Chưa có lịch sử.</div>`}
+function renderPawns(){const box=$('pawnList');if(!box)return;box.innerHTML=state.pawns.length?state.pawns.map((p,i)=>`<div class="card"><div class="customer"><div class="avatar">${p.emoji}</div><div><h3>${p.name}</h3><small>${p.item}<br>Khoản cầm ${money(p.loan)} · Chuộc ${money(p.redeem)}</small></div><button class="pillbtn" onclick="redeemPawn(${i})">Chuộc</button></div></div>`).join(''):`<div class="empty">🤝 Chưa có món cầm cố nào.</div>`}
+function redeemPawn(i){const p=state.pawns[i];if(!p)return;if(state.money<p.redeem){toast('Khách chưa đủ tiền chuộc món này.');return}state.money+=p.loan;state.revenue+=p.redeem-p.loan;state.pawns.splice(i,1);state.rep=Math.min(5,state.rep+.04);renderAll();renderPawns();toast('🤝 Đã tất toán khoản cầm của '+p.name);}
+function craftPart(){const m=state.materials.find(x=>x.qty>=2);if(!m){toast('Thiếu vật liệu để chế linh kiện.');return}m.qty-=2;state.materials.push({name:'Linh kiện phục chế',emoji:'⚙️',qty:1});state.cost+=20;state.money=Math.max(0,state.money-20);renderAll();toast('⚙️ Đã chế 1 linh kiện phục chế.');}
+function renderAll(){renderHome();renderCustomers();renderWorkshop();renderInventory();renderMarket();renderReviews();renderUpgrades();renderJournal();renderPawns();}
+renderAll();
+</script>
+</body>
+</html>
